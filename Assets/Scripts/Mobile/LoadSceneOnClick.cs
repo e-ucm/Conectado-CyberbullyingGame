@@ -14,7 +14,7 @@ public class LoadSceneOnClick : MonoBehaviour {
 
 	public void LoadScene (int level)
 	{
-        if(level == 31)
+        if(level == 0)
         {
             string simvaLanguage=LanguageSelector.instance.GetCurrentLanguage();
 	    	Debug.Log("Language : "+simvaLanguage);
