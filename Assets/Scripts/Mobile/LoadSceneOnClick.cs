@@ -16,14 +16,12 @@ public class LoadSceneOnClick : MonoBehaviour {
 	{
         if(level == 31)
         {
-            var simvaPlugin = GameObject.FindObjectOfType<Simva.SimvaPlugin>();
-            if (simvaPlugin)
-            {
-                DestroyImmediate(simvaPlugin.gameObject);
-                SimvaManager.Instance.Bridge = null;
-            }
-        }
-        SceneManager.LoadScene(level);
+            string simvaLanguage=LanguageSelector.instance.GetCurrentLanguage();
+	    	Debug.Log("Language : "+simvaLanguage);
+    		StartCoroutine(Simva.SimvaPlugin.Instance.ManualStart(simvaLanguage));
+        } else {
+			SceneManager.LoadScene(level);
+		}
 	}
 
     public void LoadSceneIfCnfg(int level)
@@ -42,4 +40,19 @@ public class LoadSceneOnClick : MonoBehaviour {
 		}
 	}
 
+	public void ExitNoConnected() {
+		var simvaPlugin = Simva.SimvaPlugin.Instance;
+        if (simvaPlugin)
+        {
+            DestroyImmediate(simvaPlugin.gameObject);
+            SimvaManager.Instance.Bridge = null;
+        }
+		if (Application.isEditor) {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        } else {
+            Application.Quit();
+        }
+	}
 }
